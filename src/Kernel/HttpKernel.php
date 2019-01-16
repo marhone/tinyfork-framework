@@ -39,13 +39,20 @@ class HttpKernel
     private $container;
 
     /**
+     * @var string
+     */
+    private $root;
+
+    /**
      * Singleton
      * HttpKernel constructor.
-     * @param $environment
-     * @param $debug
+     * @param string $root
+     * @param string $environment
+     * @param bool $debug
      */
-    private function __construct(string $environment, bool $debug = false)
+    private function __construct(string $root, string $environment, bool $debug = false)
     {
+        $this->root = $root;
         $this->debug = $debug;
         $this->environment = $environment;
     }
@@ -187,6 +194,6 @@ class HttpKernel
     private function getProjectDir()
     {
         // stupid code
-        return dirname(dirname(__DIR__));
+        return $this->root;
     }
 }

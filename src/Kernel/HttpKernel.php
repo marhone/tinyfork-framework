@@ -24,6 +24,7 @@ use Tinyfork\Middleware\Dispatcher;
 
 class HttpKernel
 {
+    private $root;
     private $booted = false;
     private $debug;
     private $environment;
@@ -37,11 +38,6 @@ class HttpKernel
      * @var Container
      */
     private $container;
-
-    /**
-     * @var string
-     */
-    private $root;
 
     /**
      * Singleton
@@ -59,14 +55,15 @@ class HttpKernel
 
     /**
      * TODO:: NEED A FACTORY
+     * @param string $root
      * @param string $environment
      * @param bool $debug
      * @return HttpKernel
      */
-    public static function newInstance(string $environment, bool $debug = false)
+    public static function newInstance(string $root, string $environment, bool $debug = false)
     {
         if (is_null(self::$instance)) {
-            self::$instance = new self($environment, $debug);
+            self::$instance = new self($root, $environment, $debug);
         }
 
         return self::$instance;

@@ -1,0 +1,28 @@
+{
+    "name": "marhone/tinyfork",
+    "description": "simple and crude web framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "marhone",
+            "email": "no7nic3@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tinyfork\\": "src/"
+        },
+        "files": ["src/Support/helpers.php"]
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "symfony/http-foundation": "^4.2",
+        "symfony/dependency-injection": "^4.2",
+        "symfony/config": "^4.2",
+        "symfony/yaml": "^4.2",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.2"
+    }
+}

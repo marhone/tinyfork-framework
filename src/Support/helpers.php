@@ -58,8 +58,22 @@ if (!function_exists('orm')) {
 if (!function_exists('view')) {
     function view($template, array $params = [])
     {
-        $template .= '.twig';
-        $content = app('twig')->render($template, $params);
+        $viewEngine = app('view-engine');
+
+        switch ($viewEngine) {
+            case 'twig':
+                $suffix = '.twig';
+                break;
+            case 'blade':
+                $suffix = '.blade.php';
+                break;
+            default:
+                $suffix = '.html';
+                break;
+        }
+
+        $template .= $suffix;
+        $content = app($viewEngine)->render($template, $params);
 
         return response($content);
     }

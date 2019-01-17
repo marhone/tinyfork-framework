@@ -9,9 +9,6 @@
 namespace Tinyfork\Kernel;
 
 
-use App\Middlewares\ExceptionHandler;
-use App\Middlewares\Router;
-use App\Providers\ServiceProviderRegister;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
@@ -82,14 +79,13 @@ class HttpKernel
         // 向 容器 注入 Request
         $this->container->set('request', $request);
 
-        // 异常处理中间件
-        $middlewares[] = $this->container->get(ExceptionHandler::class);
 
-        // 路由中间件
-        $middlewares[] = new Router();
-
-        // 缓存中间件
-        // $middlewares[] = $this->container->get(Cache::class);
+        // 加载作用于全部路由的中间件
+        $globalMiddlewares = $this->container->getParameter('middlewares');
+        $middlewares = [];
+        foreach ($globalMiddlewares as $key) {
+            $middlewares[] = $this->container->get($key);
+        }
 
         // PSR-15 请求处理器
         $runner = (new Dispatcher($middlewares));
@@ -157,7 +153,8 @@ class HttpKernel
      */
     protected function extend()
     {
-        $this->container->get(ServiceProviderRegister::class)->register($this->container);
+        $serviceProvider = $this->container->getParameter('service-provider');
+        $this->container->get($serviceProvider)->register($this->container);
     }
 
     /**
